@@ -1,0 +1,509 @@
+<html lang="fr" class="scroll-smooth"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Osmoz | L'IA pour Tous</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+:root {
+--font-sans: 'Inter', sans-serif;
+}
+body {
+font-family: var(--font-sans);
+background-color: #030305;
+color: #e2e8f0;
+overflow-x: hidden;
+}
+/* Smooth grainy noise overlay for texture */
+.noise-bg {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+pointer-events: none;
+z-index: 50;
+opacity: 0.03;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+/* Custom scrollbar */
+::-webkit-scrollbar {
+width: 6px;
+}
+::-webkit-scrollbar-track {
+background: #030305;
+}
+::-webkit-scrollbar-thumb {
+background: #333;
+border-radius: 3px;
+}
+/* Subtle animations */
+@keyframes float {
+0% { transform: translateY(0px); }
+50% { transform: translateY(-10px); }
+100% { transform: translateY(0px); }
+}
+.animate-float {
+animation: float 6s ease-in-out infinite;
+}
+@keyframes flow {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+.text-glow {
+text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+.glass-panel {
+background: rgba(255, 255, 255, 0.03);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.gradient-border-mask {
+position: relative;
+background: #030305;
+background-clip: padding-box;
+border: 1px solid transparent;
+border-radius: 0.75rem;
+}
+.gradient-border-mask::before {
+content: "";
+position: absolute;
+top: 0; right: 0; bottom: 0; left: 0;
+z-index: -1;
+margin: -1px;
+border-radius: inherit;
+background: linear-gradient(to bottom right, rgba(255,255,255,0.1), rgba(255,255,255,0));
+}
+</style></head>
+<body class="selection:bg-indigo-500/30 selection:text-white">
+
+    <div class="noise-bg"></div>
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-[-1]">
+        <!-- Gradient Orbs -->
+        <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-blue-900/20 blur-[120px] mix-blend-screen"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-indigo-900/10 blur-[100px] mix-blend-screen"></div>
+        <!-- Grid -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4">
+        <div class="glass-panel rounded-full px-2 py-2 flex items-center justify-between gap-8 shadow-2xl shadow-black/50 transition-all duration-300 hover:border-white/10">
+            <div class="pl-4 flex items-center gap-2">
+                <span class="iconify text-white" data-icon="lucide:aperture" data-width="24"></span>
+                <span class="font-semibold tracking-tight text-white text-lg">OSMOZ</span>
+            </div>
+
+            <div class="hidden md:flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/5">
+                <a href="#about" class="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/5">À Propos</a>
+                <a href="#programs" class="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/5">Programmes</a>
+                <a href="#events" class="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors rounded-full hover:bg-white/5">Événements</a>
+            </div>
+
+            <div class="pr-1">
+                <a href="#join" class="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full text-xs font-semibold tracking-tight hover:bg-slate-200 transition-colors">
+                    Nous Rejoindre
+                    <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex flex-col justify-center items-center pt-32 pb-20 px-6 overflow-hidden">
+        
+        <!-- Trust Badge -->
+        <div class="animate-float mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-yellow-500/20 bg-yellow-500/5 backdrop-blur-sm">
+            <span class="iconify text-yellow-400" data-icon="lucide:trophy" data-width="14"></span>
+            <span class="text-xs font-medium text-yellow-200/90 tracking-wide uppercase">Nominé Projet de l’Année 2023 — Berkeley Fisher Center</span>
+        </div>
+
+        <!-- Main Heading -->
+        <h1 class="text-center max-w-5xl mx-auto">
+            <span class="block text-5xl md:text-8xl font-semibold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 pb-4 leading-[1.1]">
+                L’IA pour Tous.
+            </span>
+            <span class="block text-5xl md:text-8xl font-semibold tracking-tighter text-white/90 leading-[1.1]">
+                Repenser. <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Réinventer.</span>
+            </span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="mt-8 text-center text-slate-400 max-w-2xl text-lg md:text-xl font-light leading-relaxed">
+            Nous transformons l’intelligence artificielle en moteur d’impact social, d’innovation et d’apprentissage accessible à chacun.
+        </p>
+
+        <!-- CTAs -->
+        <div class="mt-10 flex flex-col sm:flex-row items-center gap-4">
+            <a href="#join" class="group relative px-8 py-4 bg-white text-black rounded-full font-semibold text-sm tracking-tight overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                <span class="relative flex items-center gap-2">
+                    Rejoindre Osmoz
+                    <span class="iconify group-hover:translate-x-1 transition-transform" data-icon="lucide:sparkles" data-width="16"></span>
+                </span>
+            </a>
+            <a href="#programs" class="group px-8 py-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-white font-medium text-sm tracking-tight hover:bg-white/10 transition-colors flex items-center gap-2">
+                Découvrir les Programmes
+                <span class="iconify opacity-50 group-hover:opacity-100 transition-opacity" data-icon="lucide:chevron-down" data-width="16"></span>
+            </a>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
+            <span class="text-[10px] uppercase tracking-widest text-white/40">Scroll</span>
+            <span class="iconify text-white" data-icon="lucide:mouse" data-width="20"></span>
+        </div>
+
+        <!-- Decorative Abstract Mesh (CSS implementation) -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] z-[-1] opacity-30 pointer-events-none">
+            <div class="absolute inset-0 border border-white/5 rounded-[100%] transform rotate-12 scale-110"></div>
+            <div class="absolute inset-0 border border-white/5 rounded-[100%] transform -rotate-12 scale-90"></div>
+            <div class="absolute inset-0 border border-indigo-500/20 rounded-[100%] transform rotate-45 blur-xl"></div>
+        </div>
+    </section>
+
+    <!-- Metrics Section -->
+    <section class="py-12 border-y border-white/5 bg-white/[0.01]">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+            <div class="space-y-2">
+                <div class="text-4xl md:text-5xl font-semibold tracking-tighter text-white">1500+</div>
+                <div class="text-xs font-medium uppercase tracking-widest text-indigo-400">Personnes Touchées</div>
+            </div>
+            <div class="space-y-2">
+                <div class="text-4xl md:text-5xl font-semibold tracking-tighter text-white">40+</div>
+                <div class="text-xs font-medium uppercase tracking-widest text-cyan-400">Événements</div>
+            </div>
+            <div class="space-y-2">
+                <div class="text-4xl md:text-5xl font-semibold tracking-tighter text-white">12</div>
+                <div class="text-xs font-medium uppercase tracking-widest text-rose-400">Partenaires Tech</div>
+            </div>
+            <div class="space-y-2">
+                <div class="text-4xl md:text-5xl font-semibold tracking-tighter text-white">2023</div>
+                <div class="text-xs font-medium uppercase tracking-widest text-emerald-400">Fondation</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Grid -->
+    <section id="about" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-16">
+                <h2 class="text-3xl md:text-5xl font-semibold tracking-tighter mb-6">Notre Mission</h2>
+                <p class="text-slate-400 text-lg max-w-2xl border-l-2 border-indigo-500 pl-6">
+                    Fondée en 2023, Osmoz a pour mission de rendre l’IA accessible à tous et d’en faire un levier de transformation positive.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="group relative p-8 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all duration-500 hover:bg-white/[0.07]">
+                    <div class="h-12 w-12 rounded-full bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400 group-hover:scale-110 transition-transform">
+                        <span class="iconify" data-icon="lucide:graduation-cap" data-width="24"></span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Éducation &amp; Impact</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Ateliers, conférences et formations pratiques pour démocratiser l'IA dans les quartiers, écoles et associations.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group relative p-8 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all duration-500 hover:bg-white/[0.07]">
+                    <div class="h-12 w-12 rounded-full bg-cyan-500/20 flex items-center justify-center mb-6 text-cyan-400 group-hover:scale-110 transition-transform">
+                        <span class="iconify" data-icon="lucide:zap" data-width="24"></span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Innovation PME</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Accompagnement sur mesure pour l'automatisation et l'aide à la décision. Solutions techniques concrètes.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group relative p-8 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all duration-500 hover:bg-white/[0.07]">
+                    <div class="h-12 w-12 rounded-full bg-rose-500/20 flex items-center justify-center mb-6 text-rose-400 group-hover:scale-110 transition-transform">
+                        <span class="iconify" data-icon="lucide:rocket" data-width="24"></span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Accélérateur Tech</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Réalisation de POC et MVP, mentorat technique et transformation digitale via l'IA générative.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="py-32 bg-black relative overflow-hidden">
+        <!-- Background Glow -->
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-indigo-900/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div>
+                    <span class="text-indigo-500 font-mono text-xs uppercase tracking-widest mb-2 block">Architecture des Savoirs</span>
+                    <h2 class="text-3xl md:text-5xl font-semibold tracking-tighter text-white">Nos Programmes</h2>
+                </div>
+                <a href="#join" class="text-sm font-medium text-white/60 hover:text-white flex items-center gap-2 transition-colors">
+                    Voir le catalogue complet
+                    <span class="iconify" data-icon="lucide:arrow-right" data-width="16"></span>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Large Card 1 -->
+                <div class="group relative rounded-3xl overflow-hidden min-h-[400px] border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" alt="AI Education" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-30 group-hover:scale-105 transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full">
+                        <div class="inline-block px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-[10px] uppercase tracking-wide mb-4">
+                            Flagship
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-2">Transformation Digitale</h3>
+                        <p class="text-slate-400 text-sm max-w-md mb-6">
+                            Accompagnement technique complet pour PME : audit, stratégie IA, implémentation d'automatisations et formation des équipes.
+                        </p>
+                        <div class="flex gap-2">
+                             <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300">Audit</span>
+                             <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300">Strategy</span>
+                             <span class="px-3 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300">Automation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-rows-2 gap-4">
+                    <!-- Small Card 1 -->
+                    <div class="group relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 hover:border-white/20 transition-all p-8 flex flex-col justify-between">
+                         <div class="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-40 transition-opacity">
+                            <span class="iconify text-white" data-icon="lucide:cpu" data-width="64"></span>
+                         </div>
+                         <h3 class="text-xl font-semibold text-white">Accélérateur MVP</h3>
+                         <p class="text-slate-400 text-sm mt-2">
+                             De l'idée au prototype fonctionnel. Nous accompagnons les porteurs de projets dans la création de POC IA.
+                         </p>
+                         <div class="mt-6 flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-wide cursor-pointer">
+                            En savoir plus <span class="iconify" data-icon="lucide:arrow-up-right" data-width="12"></span>
+                         </div>
+                    </div>
+
+                    <!-- Small Card 2 -->
+                    <div class="group relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 hover:border-white/20 transition-all p-8 flex flex-col justify-between">
+                        <div class="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-40 transition-opacity">
+                            <span class="iconify text-white" data-icon="lucide:users" data-width="64"></span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white">Démocratisation</h3>
+                        <p class="text-slate-400 text-sm mt-2">
+                             Ateliers immersifs dans les écoles et associations pour démystifier les algorithmes.
+                        </p>
+                        <div class="mt-6 flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wide cursor-pointer">
+                           En savoir plus <span class="iconify" data-icon="lucide:arrow-up-right" data-width="12"></span>
+                        </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="py-24 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-3xl md:text-5xl font-semibold tracking-tighter mb-12 text-center">Événements Récents</h2>
+            
+            <div class="space-y-4">
+                <!-- Event Item -->
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-all">
+                    <div class="flex items-start gap-6">
+                        <div class="flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-white/5 border border-white/10">
+                            <span class="text-xs text-slate-400 uppercase">Oct</span>
+                            <span class="text-xl font-bold text-white">12</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-white group-hover:text-indigo-400 transition-colors">NASA Space Apps Challenge</h3>
+                            <p class="text-slate-400 text-sm mt-1">Hackathon international • Mentoring &amp; Organisation</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            Terminé
+                         </span>
+                    </div>
+                </div>
+
+                <!-- Event Item -->
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-all">
+                    <div class="flex items-start gap-6">
+                        <div class="flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-white/5 border border-white/10">
+                            <span class="text-xs text-slate-400 uppercase">Nov</span>
+                            <span class="text-xl font-bold text-white">05</span>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-white group-hover:text-indigo-400 transition-colors">Conférence IA &amp; Éthique</h3>
+                            <p class="text-slate-400 text-sm mt-1">Table ronde avec experts • Paris</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                            Inscriptions closes
+                         </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join / Contact Section -->
+    <section id="join" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                
+                <!-- Left Content -->
+                <div class="sticky top-32">
+                    <h2 class="text-4xl md:text-6xl font-semibold tracking-tighter text-white mb-6">
+                        Rejoignez le <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">mouvement.</span>
+                    </h2>
+                    <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                        Que vous soyez étudiant, entrepreneur, ou simplement curieux, Osmoz est votre plateforme pour comprendre et façonner le futur de l'IA.
+                    </p>
+                    
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center gap-3 text-slate-300">
+                            <span class="iconify text-indigo-500" data-icon="lucide:check-circle" data-width="20"></span>
+                            Accès aux ateliers exclusifs
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-300">
+                            <span class="iconify text-indigo-500" data-icon="lucide:check-circle" data-width="20"></span>
+                            Réseau d'experts et mentors
+                        </li>
+                        <li class="flex items-center gap-3 text-slate-300">
+                            <span class="iconify text-indigo-500" data-icon="lucide:check-circle" data-width="20"></span>
+                            Opportunités de projets réels
+                        </li>
+                    </ul>
+
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-indigo-900/20 to-transparent border border-indigo-500/20">
+                        <blockquote class="text-sm italic text-slate-300 mb-4">
+                            "Osmoz a transformé ma vision de la technologie. J'ai pu lancer mon premier prototype grâce à leur accompagnement."
+                        </blockquote>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-slate-700"></div>
+                            <div class="text-xs font-medium text-white">Julie M. <span class="text-slate-500">- Participante 2023</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Form -->
+                <div class="glass-panel p-8 md:p-10 rounded-3xl border border-white/10 shadow-2xl">
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-medium text-slate-400 uppercase tracking-wide">Nom</label>
+                                <input type="text" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all placeholder:text-slate-600" placeholder="Votre nom">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-medium text-slate-400 uppercase tracking-wide">Email</label>
+                                <input type="email" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all placeholder:text-slate-600" placeholder="vous@exemple.com">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wide">Téléphone</label>
+                            <input type="tel" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all placeholder:text-slate-600" placeholder="+33 6 ...">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wide">Centre d'intérêt</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="interest" class="peer sr-only">
+                                    <div class="px-4 py-3 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm text-center peer-checked:bg-indigo-500 peer-checked:text-white peer-checked:border-indigo-400 transition-all">Formation</div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="interest" class="peer sr-only">
+                                    <div class="px-4 py-3 rounded-lg border border-white/10 bg-white/5 text-slate-400 text-sm text-center peer-checked:bg-indigo-500 peer-checked:text-white peer-checked:border-indigo-400 transition-all">Partenariat</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wide">Message</label>
+                            <textarea rows="4" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all placeholder:text-slate-600" placeholder="Dites-nous en plus sur votre projet..."></textarea>
+                        </div>
+
+                        <button type="button" class="w-full py-4 bg-white text-black font-bold rounded-lg hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
+                            Envoyer la demande
+                            <span class="iconify" data-icon="lucide:send" data-width="16"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative bg-black pt-24 pb-12 border-t border-white/10 overflow-hidden">
+        <!-- Giant Watermark -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none opacity-[0.03]">
+            <h1 class="text-[20vw] font-bold text-center text-white select-none translate-y-[30%]">OSMOZ</h1>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <span class="iconify text-white" data-icon="lucide:aperture" data-width="28"></span>
+                        <span class="font-bold text-xl text-white tracking-tight">OSMOZ</span>
+                    </div>
+                    <p class="text-slate-500 text-sm leading-relaxed">
+                        Association à but non lucratif dédiée à la démocratisation de l'IA et de la Data.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-4">Navigation</h4>
+                    <ul class="space-y-3 text-sm text-slate-500">
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">À Propos</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Programmes</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Événements</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-4">Légal</h4>
+                    <ul class="space-y-3 text-sm text-slate-500">
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Mentions Légales</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">Politique de confidentialité</a></li>
+                        <li><a href="#" class="hover:text-indigo-400 transition-colors">CGU</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-4">Social</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white hover:text-black transition-all">
+                            <span class="iconify" data-icon="lucide:linkedin" data-width="18"></span>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white hover:text-black transition-all">
+                            <span class="iconify" data-icon="lucide:twitter" data-width="18"></span>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white hover:text-black transition-all">
+                            <span class="iconify" data-icon="lucide:instagram" data-width="18"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5">
+                <p class="text-xs text-slate-600">© 2024 Osmoz Association. Tous droits réservés.</p>
+                <div class="flex items-center gap-2 mt-4 md:mt-0">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs text-slate-500">Systèmes opérationnels</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+</body></html>
